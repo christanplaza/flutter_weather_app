@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/widgets/weather_tile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:weather_app/widgets/main_widget.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<WeatherInfo> _fetchWeather() async {
-  final zipCode = "5000";
-  final apiKey = "6fdf5b62ed44f5ffddd0210847a972fb";
+  final zipCode = dotenv.env['zipCode'];
+  final apiKey = dotenv.env['appKey'];
   final requestUrl =
       "https://api.openweathermap.org/data/2.5/weather?zip=$zipCode,ph&appid=$apiKey&units=metric";
 
@@ -52,7 +52,9 @@ class WeatherInfo {
   }
 }
 
-void main() {
+Future main() async {
+  await dotenv.load();
+
   runApp(
     MaterialApp(
       title: "Weather App",
